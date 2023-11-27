@@ -1,0 +1,14 @@
+<div *ngIf="usuarioInfo">
+    <h2>{{ usuarioInfo.nombre }}</h2>
+    <p><strong>Dirección:</strong> {{ usuarioInfo.direccion }}</p>
+    <p><strong>Correo:</strong> {{ usuarioInfo.correo }}</p>
+</div>
+
+<div *ngIf="usuarioFavs">
+    <h2>{{ usuarioFavs.favoritos }}</h2>
+</div>
+  
+  <div *ngIf="!usuarioInfo">
+    <p>Cargando información del usuario...</p>
+  </div>
+  
