@@ -17,6 +17,10 @@ const usuarioSchema = mongoose.Schema({
         type: String,
         required: true
     },
+    roles: {
+        type: [String],
+        default: ['user']
+    },
     favoritos: [
         {
             libroId: { type: mongoose.Schema.Types.ObjectId, ref: 'Libro' },

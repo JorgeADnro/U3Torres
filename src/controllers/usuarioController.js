@@ -4,17 +4,21 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage })
 const { notificarFav } = require ('../service/notifi.service.js');
 const jwt = require('jsonwebtoken');
+const mongoose = require("mongoose");
 
 exports.registrarUsuario = async (req, res) => {
-    const { nombre, direccion, correo , passwd } = req.body;
+    const { nombre, direccion, correo, passwd } = req.body;
 
-    const usuario = new Usuario ({nombre,direccion,correo,passwd});
+    const roles = ['user'];
+
+    const usuario = new Usuario({ nombre, direccion, correo, passwd, roles });
+
+    console.log(usuario);
 
     await usuario.save();
 
-    const token = jwt.sign({_id: usuario._id}, 'secretKey');
-    res.status(200).json({token});
-
+    const token = jwt.sign({ _id: usuario._id }, 'secretKey');
+    res.status(200).json({ token });
 }
 
 exports.loguearUsuario = async (req,res) => {
@@ -79,19 +83,24 @@ exports.verificador = function verifyToken(req, res, next) {
 exports.añadirFav = async (req, res) => {
     try {
         const usuario = await Usuario.findById(req.usuarioId._id);
-        const libroTitl = req.body.libroTitl;
         const libroId = req.body.libroId;
+        const libroTitl = req.body.libroTitl;
 
         if (!usuario) {
             return res.status(404).json({ message: 'Usuario no encontrado' });
         }
 
-        if (usuario.favoritos.includes(libroId)) {
+        const libroObjectId = mongoose.Types.ObjectId(libroId);
+
+        // Verificar si el libroId ya está en favoritos
+        const existeEnFavoritos = usuario.favoritos.some(favorito => favorito.libroId.equals(libroObjectId));
+
+        if (existeEnFavoritos) {
             return res.status(400).json({ message: 'El libro ya está en favoritos' });
         }
 
-        // Agregar el ID del libro a la lista de favoritos
-        usuario.favoritos.push({ libroId: req.body.libroId, libroTitl: req.body.libroTitl });
+        // Agregar el nuevo libro a la lista de favoritos
+        usuario.favoritos.push({ libroId: libroObjectId, libroTitl });
 
         await usuario.save();
 
@@ -103,6 +112,7 @@ exports.añadirFav = async (req, res) => {
         res.status(500).json({ message: 'Error interno del servidor' });
     }
 }
+
 
 exports.verFavs = async (req, res) => {
     try {
@@ -123,18 +133,27 @@ exports.verFavs = async (req, res) => {
 exports.eliminarFav = async (req, res) => {
     try {
         const usuario = await Usuario.findById(req.usuarioId._id);
-        const libroId = req.body.libroId;
+        const libroId = req.params.libroId;
+
+        const libroObjectId = mongoose.Types.ObjectId(libroId);
+
+        // Verificar si el libroId ya está en favoritos
+        const existeEnFavoritos = usuario.favoritos.some(favorito => favorito.libroId.equals(libroObjectId));
 
         if (!usuario) {
             return res.status(404).json({ message: 'Usuario no encontrado' });
         }
 
-        if (!usuario.favoritos.includes(libroId)) {
+        if (!existeEnFavoritos) {
             return res.status(400).json({ message: 'El libro no está en favoritos' });
         }
 
         // Encuentra el índice del libro en favoritos
-        const index = usuario.favoritos.indexOf(libroId);
+        const index = usuario.favoritos.findIndex(favorito => favorito.libroId.toString() === libroId);
+
+        if (index === -1) {
+            return res.status(400).json({ message: 'El libro no está en favoritos' });
+        }
 
         // Elimina el elemento del array
         usuario.favoritos.splice(index, 1);

@@ -32,6 +32,6 @@ router.post('/favoritos/agregar', usuarioController.verificador, usuarioControll
 router.get('/favoritos/verFav', usuarioController.verificador, usuarioController.verFavs);
 
 // Eliminar de favoritos
-router.delete('/favoritos/eliminar', usuarioController.verificador, usuarioController.eliminarFav);
+router.delete('/favoritos/eliminar/:libroId', usuarioController.verificador, usuarioController.eliminarFav);
 
 module.exports = router;
