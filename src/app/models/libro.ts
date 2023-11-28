@@ -1,5 +1,5 @@
 export class Libro{
-    _id: number;
+    _id: string;
     titulo: String;
     editorial: String;
     fechpubl: String;
@@ -8,7 +8,7 @@ export class Libro{
     numpag: String;
     foto?: string;
 
-    constructor(_id: number, titulo: String, editorial: String, fechpubl: String, gen: String, sinop: String, numpag: String, foto: string){
+    constructor(_id: string, titulo: String, editorial: String, fechpubl: String, gen: String, sinop: String, numpag: String, foto: string){
             this.titulo = titulo;
             this.editorial = editorial;
             this.fechpubl = fechpubl;

@@ -13,7 +13,7 @@ import { AuthService } from 'src/app/services/auth.service';
   templateUrl: './inicio.component.html',
   styleUrls: ['./inicio.component.css']
 })
-export class InicioComponent implements OnInit{
+export class InicioComponent implements OnInit {
   faTrash = faTrash;
   faPen = faPen;
   faList = faList;
@@ -34,30 +34,30 @@ export class InicioComponent implements OnInit{
 
   filtrarLibros(event: any) {
     this.librosFiltrados = this.listLibros.filter(libro => libro.titulo.toLowerCase().includes(event.target.value.toLowerCase()));
-  } 
+  }
 
   obtenerLibros() {
     this._biblioService.obtenerLibros().subscribe(data => {
       console.log(data);
       this.listLibros = data;
-    },error => {
+    }, error => {
       console.log(error);
     })
-    
+
   }
 
   getBufferImageSrc(buffer: ArrayBuffer): SafeUrl {
     const blob = new Blob([buffer]);
     const imageUrl = URL.createObjectURL(blob);
     return this.sanitizer.bypassSecurityTrustUrl(imageUrl);
-}
-
-  getSanitizedImageUrl(base64String: string, imageType: string): SafeUrl {
-      const imageUrl = `data:image/${imageType};base64,${base64String}`;
-      return this.sanitizer.bypassSecurityTrustUrl(imageUrl);
   }
 
-  agregarFavorito(libroId: number, libroTitl: String) {
+  getSanitizedImageUrl(base64String: string, imageType: string): SafeUrl {
+    const imageUrl = `data:image/${imageType};base64,${base64String}`;
+    return this.sanitizer.bypassSecurityTrustUrl(imageUrl);
+  }
+
+  agregarFavorito(libroId: string, libroTitl: String) {
     this._biblioService.agregarFavorito(libroId, libroTitl).subscribe(
       res => {
         Swal.fire({
@@ -76,5 +76,5 @@ export class InicioComponent implements OnInit{
       }
     );
   }
-  
+
 }

@@ -25,10 +25,6 @@ export class AuthService {
     return this.http.get<Usuario>('http://localhost:9000/api/info');
   }
 
-  verFavoritos(): Observable<Usuario> {
-    return this.http.get<Usuario>('http://localhost:9000/api/favoritos/verFav');
-  }
-
   loggedIn() {
     return !!localStorage.getItem('token');
   }

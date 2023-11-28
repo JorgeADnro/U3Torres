@@ -25,8 +25,17 @@ export class BiblioService {
     return this.http.get('http://localhost:9000/api/libs' + id);
   }
 
-  agregarFavorito(libroId: number, libroTitl: String): Observable<any> {
+  agregarFavorito(libroId: string, libroTitl: String): Observable<any> {
     return this.http.post('http://localhost:9000/api/favoritos/agregar', { libroId, libroTitl }, requestOptions);
+  }
+
+  verFavoritos(): Observable<{ libroId: string, libroTitl: string }[]> {
+    return this.http.get<{ libroId: string, libroTitl: string }[]>('http://localhost:9000/api/favoritos/verFav');
+  }
+
+  eliminarFavorito(libroId: string): Observable<any> {
+    const url = `http://localhost:9000/api/favoritos/eliminar/${libroId}`;
+    return this.http.delete(url);
   }
 
 }

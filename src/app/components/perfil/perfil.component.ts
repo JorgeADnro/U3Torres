@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Libro } from 'src/app/models/libro';
 import { Usuario } from 'src/app/models/usuario';
 import { AuthService } from 'src/app/services/auth.service';
+import { BiblioService } from 'src/app/services/biblio.service';
+import Swal from 'sweetalert2';
 
 
 @Component({
@@ -12,9 +14,10 @@ import { AuthService } from 'src/app/services/auth.service';
 export class PerfilComponent implements OnInit {
 
   usuarioInfo: Usuario | undefined;
-  usuarioFavs: Usuario | undefined;
+  usuarioFavs: {libroId: string ,libroTitl: string }[] | undefined;
 
-  constructor (private authService: AuthService) {}
+  constructor (public authService: AuthService,
+    private _biblioService: BiblioService) {}
 
   ngOnInit(): void {
     this.obtenerInfoUsuario();
@@ -30,12 +33,14 @@ export class PerfilComponent implements OnInit {
         console.error(error);
       }
     );
-  }
+  } 
 
   verFavoritos() {
-    this.authService.verFavoritos().subscribe(
+    this._biblioService.verFavoritos().subscribe(
       (data) => {
-        this.usuarioInfo = data;
+        this.usuarioFavs = data;
+        console.log(this.usuarioFavs);
+        
       },
       (error) => {
         console.error(error);
@@ -43,6 +48,16 @@ export class PerfilComponent implements OnInit {
     );
   }
 
-  
+  eliminarFavorito(libroId: string) {
+    this._biblioService.eliminarFavorito(libroId).subscribe(
+      () => {
+        // Actualiza la lista de favoritos después de eliminar
+        this.verFavoritos();
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
+  }
 
 }
