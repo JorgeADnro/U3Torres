@@ -42,7 +42,8 @@ export class SignupComponent implements OnInit {
       direccion: this.usuarioForm.get('direccion')?.value,
       correo: this.usuarioForm.get('correo')?.value,
       passwd: this.usuarioForm.get('passwd')?.value,
-      favoritos: []
+      favoritos: [],
+      roles: []
     }
 
     this._authService.registrarUsuario(usuario).subscribe(res => {

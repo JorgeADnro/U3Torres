@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { Usuario } from '../models/usuario';
 import { ActivatedRoute, Router } from '@angular/router';
 import Swal from 'sweetalert2';
@@ -25,6 +25,16 @@ export class AuthService {
     return this.http.get<Usuario>('http://localhost:9000/api/info');
   }
 
+  getUserId(): string | null {
+    const token = this.getToken();
+    if (token) {
+      // Decodifica el token para obtener la información del usuario
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      return payload._id;
+    }
+    return null;
+  }
+
   loggedIn() {
     return !!localStorage.getItem('token');
   }
@@ -41,6 +51,16 @@ export class AuthService {
 
   getToken() {
     return localStorage.getItem('token');
+  }
+
+  esAdmin(): Observable<boolean> {
+    // Supongamos que hay un endpoint en tu servidor que devuelve información sobre el usuario actual
+    // Puedes ajustar esto según cómo obtienes la información del usuario en tu backend
+    return this.http.get<Usuario>('http://localhost:9000/api/info').pipe(
+      map((usuario: Usuario) => {
+        return usuario && usuario.roles && usuario.roles.includes('admin');
+      })
+    );
   }
 
 }

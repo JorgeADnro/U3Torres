@@ -5,7 +5,7 @@
               <input type="text" name="buscador" placeholder="Buscar por nombre" (keyup)="filtrarLibros($event)">
             </div>
                 <span class="titulo">LISTADO DE LIBROS</span>
-                <button *ngIf="authService.loggedIn()" routerLink="/añadir-libro" class="btn btn-success float-end">NUEVO</button>
+                <button *ngIf="authService.loggedIn() && esAdmin" routerLink="/añadir-libro" class="btn btn-success float-end">NUEVO</button>
                 <table *ngIf="librosFiltrados.length > 0 || listLibros.length > 0" class="table table-striped mt-3">
                     <thead>
                       <tr>

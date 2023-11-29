@@ -15,6 +15,7 @@ export class PerfilComponent implements OnInit {
 
   usuarioInfo: Usuario | undefined;
   usuarioFavs: {libroId: string ,libroTitl: string }[] | undefined;
+  esAdmin = false;
 
   constructor (public authService: AuthService,
     private _biblioService: BiblioService) {}
@@ -28,12 +29,17 @@ export class PerfilComponent implements OnInit {
     this.authService.obtenerUsuario().subscribe(
       (data) => {
         this.usuarioInfo = data;
+        // Verificar si el usuario tiene el rol 'admin'
+        if (this.usuarioInfo.roles.includes('admin')) {
+          // Realizar acciones específicas para usuarios con rol 'admin'
+          console.log(this.usuarioInfo.roles);
+        }
       },
       (error) => {
         console.error(error);
       }
     );
-  } 
+  }
 
   verFavoritos() {
     this._biblioService.verFavoritos().subscribe(

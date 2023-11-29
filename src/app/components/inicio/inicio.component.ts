@@ -27,9 +27,16 @@ export class InicioComponent implements OnInit {
     private toastr: ToastrService,
     public sanitizer: DomSanitizer,
     public authService: AuthService) { }
+    esAdmin = false;
 
   ngOnInit(): void {
     this.obtenerLibros();
+    this.authService.esAdmin().subscribe(result => {
+      this.esAdmin = result;
+      console.log(this.esAdmin);
+    });
+    
+    
   }
 
   filtrarLibros(event: any) {
@@ -57,7 +64,7 @@ export class InicioComponent implements OnInit {
     return this.sanitizer.bypassSecurityTrustUrl(imageUrl);
   }
 
-  agregarFavorito(libroId: string, libroTitl: String) {
+  agregarFavorito(libroId: string, libroTitl: string) {
     this._biblioService.agregarFavorito(libroId, libroTitl).subscribe(
       res => {
         Swal.fire({

@@ -13,6 +13,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class SigninComponent implements OnInit{
 
   usuarioForm: FormGroup;
+  usuarioInfo: Usuario | undefined;
 
   constructor(
     private _authService: AuthService,
@@ -39,7 +40,8 @@ export class SigninComponent implements OnInit{
       direccion: this.usuarioForm.get('direccion')?.value,
       correo: this.usuarioForm.get('correo')?.value,
       passwd: this.usuarioForm.get('passwd')?.value,
-      favoritos: []
+      favoritos: [],
+      roles: []
     }
 
     this._authService.loguearUsuario(usuario).subscribe(res => {
@@ -52,6 +54,22 @@ export class SigninComponent implements OnInit{
     });
 
     console.log(usuario);
+  }
+
+  obtenerInfoUsuario() {
+    this._authService.obtenerUsuario().subscribe(
+      (data) => {
+        this.usuarioInfo = data;
+        // Verificar si el usuario tiene el rol 'admin'
+        if (this.usuarioInfo.roles.includes('admin')) {
+          // Realizar acciones específicas para usuarios con rol 'admin'
+          console.log(this.usuarioInfo.roles);
+        }
+      },
+      (error) => {
+        console.error(error);
+      }
+    );
   }
 
 }

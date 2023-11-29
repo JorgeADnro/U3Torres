@@ -5,6 +5,7 @@ export class Usuario{
     correo: String;
     passwd: String;
     favoritos: string[];
+    roles: string [];
 
     constructor(nombre: String, direccion: String, correo: String, passwd: String){
             this.nombre = nombre;
@@ -12,5 +13,6 @@ export class Usuario{
             this.correo = correo;
             this.passwd = passwd;
             this.favoritos = [];
+            this.roles = [];
         }
     }
