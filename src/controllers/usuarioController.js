@@ -49,7 +49,8 @@ exports.obtenerUsuario = async (req, res) => {
             nombre: usuario.nombre,
             direccion: usuario.direccion,
             correo: usuario.correo,
-            // ... otras propiedades que desees incluir
+            roles: usuario.roles,
+            favoritos: usuario.favoritos
         };
 
         res.json(usuarioInfo);

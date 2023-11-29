@@ -28,6 +28,10 @@ const libroSchema = mongoose.Schema({
     foto: {
         data: Buffer,
         contentType: String
+    },
+    estatus: {
+        type: String,
+        required: false
     }
 });
 

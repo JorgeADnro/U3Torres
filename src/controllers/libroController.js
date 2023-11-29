@@ -9,7 +9,7 @@ exports.guardarLibro = async (req, res) => {
             return res.status(400).send('No se proporcionaron los archivos');
         }
 
-        const { titulo, editorial, fechpubl, gen, sinop, numpag } = req.body;
+        const { titulo, editorial, fechpubl, gen, sinop, numpag, estatus } = req.body;
 
         const foto = req.files['foto'][0];
 
@@ -23,7 +23,8 @@ exports.guardarLibro = async (req, res) => {
             foto: {
                 data: foto.buffer,
                 contentType: foto.mimetype
-            }
+            },
+            estatus
         });
 
         await libro.save();
