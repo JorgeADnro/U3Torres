@@ -9,7 +9,7 @@ const transporter = nodemailer.createTransport({
 });
 
 // Función que envía el correo
-exports.notificarFav = (nombre, correo, libroTitl) => {
+notificarFav = (nombre, correo, libroTitl) => {
     const mailOptions = {
         from: 'phpmailertest633@gmail.com',
         to: correo,
@@ -25,3 +25,30 @@ exports.notificarFav = (nombre, correo, libroTitl) => {
         }
     });
 };
+
+enviarCorreoAUsuarios = (usuariosSus, libroTitl) => {
+    // Iterar sobre la lista de usuarios suscritos y enviar un correo a cada uno
+    usuariosSus.forEach(usuario => {
+        const { usuarioId, usuarioCorreo } = usuario;
+
+        const mailOptions = {
+            from: 'phpmailertest633@gmail.com',
+            to: usuarioCorreo,
+            subject: `Hola!`,
+            text: `Solo para informarte que el libro "${libroTitl}" que está en tus favoritos ¡Ahora está disponible!`
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.error(error);
+            } else {
+                console.log(`Correo enviado a ${usuarioCorreo}: ` + info.response);
+            }
+        });
+    });
+};
+
+module.exports = {
+    notificarFav,
+    enviarCorreoAUsuarios
+  };

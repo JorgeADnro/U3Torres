@@ -17,7 +17,7 @@ exports.registrarUsuario = async (req, res) => {
 
     await usuario.save();
 
-    const token = jwt.sign({ _id: usuario._id }, 'secretKey');
+    const token = jwt.sign({ _id: usuario._id, correo: usuario.correo }, 'secretKey');
     res.status(200).json({ token });
 }
 
@@ -30,7 +30,7 @@ exports.loguearUsuario = async (req,res) => {
     if(!usuario) return res.status(401).send('El correo no existe');
     if(usuario.passwd !== passwd ) return res.status(401).send('La contraseña es erronea');
 
-    const token = jwt.sign({_id: usuario._id}, 'secretKey');
+    const token = jwt.sign({_id: usuario._id, correo: usuario.correo}, 'secretKey');
     return res.status(200).json({token});
 
 }

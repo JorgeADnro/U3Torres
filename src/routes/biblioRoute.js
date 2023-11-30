@@ -16,6 +16,9 @@ router.post('/lib', usuarioController.verificador, upload.fields([{ name: 'foto'
 // Mostrar Libros
 router.get('/libs', libroController.obtenerLibros);
 
+// Suscribir usuario
+router.post('/libros/:libroId/aggUsr', libroController.añadirUsr);
+
 // Registrar usuario
 router.post('/signup', usuarioController.registrarUsuario);
 
@@ -33,5 +36,10 @@ router.get('/favoritos/verFav', usuarioController.verificador, usuarioController
 
 // Eliminar de favoritos
 router.delete('/favoritos/eliminar/:libroId', usuarioController.verificador, usuarioController.eliminarFav);
+
+router.get('/libros/:libroId/usuariosSuscritos', libroController.obtenerUsuariosSuscritos);
+
+router.post('/libros/:libroId/notificar-cambio', libroController.notificarCambio);
+
 
 module.exports = router;

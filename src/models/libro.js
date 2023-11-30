@@ -32,7 +32,13 @@ const libroSchema = mongoose.Schema({
     estatus: {
         type: String,
         required: false
-    }
+    },
+    usuarioSus: [
+        {
+            usuarioId: { type: mongoose.Schema.Types.ObjectId, ref: 'Usuario' },
+            usuarioCorreo: String
+        }
+    ]
 });
 
 module.exports = mongoose.model('Libro', libroSchema);
