@@ -25,15 +25,19 @@ export class ObserverServiceService {
     this.bookSubscriptions.set(bookId, updatedSubscriptions);
     return this.http.post(url, {});
   }
+
+  eliminarUsr(userId: string, bookId: string): Observable<any> {
+    const url = `http://localhost:9000/api/libros/${bookId}/eliminar-usr?usuarioId=${userId}`;
+    return this.http.delete(url);
+  }
   
   // Método para manejar la suscripción automática al agregar un favorito
   handleUserSubscriptionOnFavoriteAdd(userId: string,userMail: string, bookId: string) {
     this.subscribeUserToBook(userId,userMail, bookId);
   }
 
-  obtenerUsuariosSuscritos(libroId: string): Observable<any[]> {
-    const url = `http://localhost:9000/api/libros/${libroId}/usuariosSuscritos`;
-    return this.http.get<any[]>(url);
+  handleUserUnSubscriptionOnFavoriteAdd(userId: string, bookId: string) {
+    this.eliminarUsr(userId, bookId);
   }
   
 }
