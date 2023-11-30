@@ -8,8 +8,8 @@ export class UserService {
 
   constructor(private bookObserverService: ObserverServiceService) {}
 
-  subscribeUserToBookOnFavoriteAdd(userId: string, bookId: string) {
+  subscribeUserToBookOnFavoriteAdd(userId: string, userMail: string,bookId: string) {
     // Lógica para suscribir automáticamente al usuario al libro
-    this.bookObserverService.subscribeUserToBook(userId, bookId);
+    this.bookObserverService.subscribeUserToBook(userId,userMail, bookId);
   }
 }

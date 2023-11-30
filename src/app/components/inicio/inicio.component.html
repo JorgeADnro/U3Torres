@@ -22,6 +22,7 @@
                     </thead>
                     <tbody>
                       <tr *ngFor="let libro of librosFiltrados.length > 0 ? librosFiltrados : listLibros">
+                        <td *ngIf="false"> {{libro._id}} </td>
                         <td> {{libro.titulo}} </td>
                         <td> {{libro.editorial}} </td>
                         <td> {{libro.fechpubl}} </td>
@@ -32,6 +33,9 @@
                             <img style="width: 100px; height: 100;" *ngIf="libro.foto" [src]="getSanitizedImageUrl(libro.foto, 'jpeg')" alt="Foto">
                         </td>
                           <i *ngIf="authService.loggedIn()" class="fa fa-heart fa-2x" (click)="agregarFavorito(libro._id, libro.titulo)" style="margin-right: 10px; cursor: pointer;"></i>
+                          <td>
+                            <button (click)="notificarCambio(libro._id)">Notificar Cambio</button>
+                          </td>
                       </tr>
                     </tbody>
                   </table>

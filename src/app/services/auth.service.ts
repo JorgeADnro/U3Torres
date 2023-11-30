@@ -35,6 +35,19 @@ export class AuthService {
     return null;
   }
 
+  getUserMail(): string | null {
+    const token = this.getToken();
+    
+    if (token) {
+      // Decodifica el token para obtener la información del usuario
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      console.log('Payload:', payload);
+      return payload.correo;
+    }
+  
+    return null;
+  }
+
   loggedIn() {
     return !!localStorage.getItem('token');
   }
