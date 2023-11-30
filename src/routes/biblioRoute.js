@@ -8,7 +8,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage })
 const Usuario = require('../models/usuario');
 const { notificarFav } = require('../service/notifi.service.js');
-
+const { actualizarEstatusLibro } = require('../controllers/libroController.js');
 
 // Crear libro
 router.post('/lib', usuarioController.verificador, upload.fields([{ name: 'foto' }]), libroController.guardarLibro);
@@ -39,7 +39,8 @@ router.delete('/favoritos/eliminar/:libroId', usuarioController.verificador, usu
 
 router.get('/libros/:libroId/usuariosSuscritos', libroController.obtenerUsuariosSuscritos);
 
-router.post('/libros/:libroId/notificar-cambio', libroController.notificarCambio);
+router.post('/libros/:libroId/notificar-cambioDisp',libroController.notificarCambioDisp);
 
+router.post('/libros/:libroId/notificar-cambioPrest',libroController.notificarCambioPrest);
 
 module.exports = router;

@@ -3,7 +3,7 @@ const multer = require('multer')
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage })
 const mongoose = require("mongoose");
-const { enviarCorreoAUsuarios } = require ('../service/notifi.service.js');
+const { enviarCorreoAUsuarios } = require('../service/notifi.service.js');
 
 exports.guardarLibro = async (req, res) => {
     try {
@@ -32,7 +32,7 @@ exports.guardarLibro = async (req, res) => {
         await libro.save();
 
         res.send(libro);
-        
+
     } catch (error) {
         console.log(error);
         res.status(500).send('Hubo un error');
@@ -91,23 +91,23 @@ exports.añadirUsr = async (req, res) => {
 
 exports.obtenerUsuariosSuscritos = async (req, res) => {
     try {
-      const libroId = req.params.libroId;
-      const libro = await Libro.findById(libroId);
-  
-      if (!libro) {
-        return res.status(404).json({ message: 'Libro no encontrado' });
-      }
-  
-      // Extraer los usuarios suscritos y devolverlos como respuesta
-      const usuariosSuscritos = libro.usuarioSus || [];
-      res.json(usuariosSuscritos);
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Error interno del servidor' });
-    }
-  };
+        const libroId = req.params.libroId;
+        const libro = await Libro.findById(libroId);
 
-  exports.notificarCambio = async (req, res) => {
+        if (!libro) {
+            return res.status(404).json({ message: 'Libro no encontrado' });
+        }
+
+        // Extraer los usuarios suscritos y devolverlos como respuesta
+        const usuariosSuscritos = libro.usuarioSus || [];
+        res.json(usuariosSuscritos);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error interno del servidor' });
+    }
+};
+
+exports.notificarCambioDisp = async (req, res) => {
     try {
         const libroId = req.params.libroId;
         const libro = await Libro.findById(libroId);
@@ -119,8 +119,32 @@ exports.obtenerUsuariosSuscritos = async (req, res) => {
         const usuariosSus = libro.usuarioSus || [];
 
         // Envia correos electrónicos a los usuarios suscritos
-        enviarCorreoAUsuarios(usuariosSus, libro.titulo);
+        libroDisp(usuariosSus, libro.titulo);
+        libro.estatus = 'Disponible';
+        await libro.save();
 
+        res.json({ message: 'Notificación de cambio enviada a usuarios suscritos' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error interno del servidor' });
+    }
+};
+
+exports.notificarCambioPrest = async (req, res) => {
+    try {
+        const libroId = req.params.libroId;
+        const libro = await Libro.findById(libroId);
+
+        if (!libro) {
+            return res.status(404).json({ message: 'Libro no encontrado' });
+        }
+
+        const usuariosSus = libro.usuarioSus || [];
+
+        // Envia correos electrónicos a los usuarios suscritos
+        libroPrest(usuariosSus, libro.titulo);
+        libro.estatus = 'Prestado';
+        await libro.save();
 
         res.json({ message: 'Notificación de cambio enviada a usuarios suscritos' });
     } catch (error) {

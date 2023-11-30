@@ -26,7 +26,7 @@ notificarFav = (nombre, correo, libroTitl) => {
     });
 };
 
-enviarCorreoAUsuarios = (usuariosSus, libroTitl) => {
+libroDisp = (usuariosSus, libroTitl) => {
     // Iterar sobre la lista de usuarios suscritos y enviar un correo a cada uno
     usuariosSus.forEach(usuario => {
         const { usuarioId, usuarioCorreo } = usuario;
@@ -48,7 +48,30 @@ enviarCorreoAUsuarios = (usuariosSus, libroTitl) => {
     });
 };
 
+libroPrest = (usuariosSus, libroTitl) => {
+    // Iterar sobre la lista de usuarios suscritos y enviar un correo a cada uno
+    usuariosSus.forEach(usuario => {
+        const { usuarioId, usuarioCorreo } = usuario;
+
+        const mailOptions = {
+            from: 'phpmailertest633@gmail.com',
+            to: usuarioCorreo,
+            subject: `Hola!`,
+            text: `Solo para informarte que el libro "${libroTitl}" que está en tus favoritos ¡Ya no está disponible!`
+        };
+
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.error(error);
+            } else {
+                console.log(`Correo enviado a ${usuarioCorreo}: ` + info.response);
+            }
+        });
+    });
+};
+
 module.exports = {
     notificarFav,
-    enviarCorreoAUsuarios
+    libroDisp,
+    libroPrest
   };

@@ -1,4 +1,5 @@
 const Usuario = require("../models/usuario.js");
+const Libro = require("../models/libro.js");
 const multer = require('multer')
 const storage = multer.memoryStorage();
 const upload = multer({ storage: storage })
@@ -159,9 +160,17 @@ exports.eliminarFav = async (req, res) => {
         // Elimina el elemento del array
         usuario.favoritos.splice(index, 1);
 
+        // Desvincular al usuario del libro (eliminarlo de usuariosSus)
+        const libro = await Libro.findById(libroId);
+        if (libro) {
+            libro.usuariosSus = libro.usuariosSus.filter(suscriptor => suscriptor.usuarioId.toString() !== req.usuarioId._id);
+            await libro.save();
+        }
+
+
         await usuario.save();
 
-        res.json({ message: 'Libro eliminado de favoritos' });
+        res.json({ message: 'Favorito eliminado y usuario desvinculado del libro' });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Error interno del servidor' });
