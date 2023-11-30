@@ -5,8 +5,20 @@ const usuarioSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    direccion: {
+    calle: {
         type: String,
+        required: true
+    },
+    no: {
+        type: String,
+        required: true
+    },
+    col: {
+        type: String,
+        required: true
+    },
+    cp: {
+        type: Number,
         required: true
     },
     correo: {

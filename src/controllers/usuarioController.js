@@ -6,13 +6,14 @@ const upload = multer({ storage: storage })
 const { notificarFav } = require ('../service/notifi.service.js');
 const jwt = require('jsonwebtoken');
 const mongoose = require("mongoose");
+const Colonia = require("../models/colonia.js");
 
 exports.registrarUsuario = async (req, res) => {
-    const { nombre, direccion, correo, passwd } = req.body;
+    const { nombre, calle, col, no, cp, correo, passwd } = req.body;
 
     const roles = ['user'];
 
-    const usuario = new Usuario({ nombre, direccion, correo, passwd, roles });
+    const usuario = new Usuario({ nombre, calle, col, no, cp, correo, passwd, roles });
 
     console.log(usuario);
 
@@ -48,7 +49,10 @@ exports.obtenerUsuario = async (req, res) => {
         // Aquí decides qué información del usuario deseas devolver en la respuesta
         const usuarioInfo = {
             nombre: usuario.nombre,
-            direccion: usuario.direccion,
+            calle: usuario.calle,
+            col: usuario.col,
+            no: usuario.no,
+            cp: usuario.cp,
             correo: usuario.correo,
             roles: usuario.roles,
             favoritos: usuario.favoritos
@@ -176,3 +180,13 @@ exports.eliminarFav = async (req, res) => {
         res.status(500).json({ message: 'Error interno del servidor' });
     }
 };
+
+exports.obtenerColonias = async (req, res) => {
+    try {
+        const colonia = await Colonia.find();
+        res.json(colonia);
+    } catch (error) {
+        console.log(error);
+        res.status(500).send('Hubo un error');
+    }
+}

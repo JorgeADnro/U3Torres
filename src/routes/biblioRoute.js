@@ -45,4 +45,7 @@ router.get('/favoritos/verFav', usuarioController.verificador, usuarioController
 // Eliminar de favoritos
 router.delete('/favoritos/eliminar/:libroId', usuarioController.verificador, usuarioController.eliminarFav);
 
+// Obtener todas las ciudades
+router.get('/libs/col',usuarioController.obtenerColonias);
+
 module.exports = router;
