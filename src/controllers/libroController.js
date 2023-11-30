@@ -89,6 +89,38 @@ exports.añadirUsr = async (req, res) => {
     }
 };
 
+exports.eliminarUsr = async (req, res) => {
+    try {
+        const libroId = req.params.libroId;
+        const libro = await Libro.findById(libroId);
+
+        if (!libro) {
+            return res.status(404).json({ message: 'Libro no encontrado' });
+        }
+
+        const usuarioId = req.query.usuarioId;
+
+        const usuarioObjectId = mongoose.Types.ObjectId(usuarioId);
+
+        // Verificar si el usuarioId está en suscritos
+        const existeEnSuscritos = libro.usuarioSus.some(suscrito => suscrito.usuarioId.equals(usuarioObjectId));
+
+        if (!existeEnSuscritos) {
+            return res.status(400).json({ message: 'El usuario no está suscrito' });
+        }
+
+        // Filtrar los usuarios suscritos y eliminar al usuario
+        libro.usuarioSus = libro.usuarioSus.filter(suscrito => !suscrito.usuarioId.equals(usuarioObjectId));
+
+        await libro.save();
+
+        res.json({ message: 'Usuario eliminado de suscritos' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error interno del servidor' });
+    }
+};
+
 exports.obtenerUsuariosSuscritos = async (req, res) => {
     try {
         const libroId = req.params.libroId;

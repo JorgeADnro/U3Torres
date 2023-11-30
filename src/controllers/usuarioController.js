@@ -137,14 +137,16 @@ exports.eliminarFav = async (req, res) => {
         const usuario = await Usuario.findById(req.usuarioId._id);
         const libroId = req.params.libroId;
 
+        const libro = await Libro.findById(libroId);
+        
+        if (!usuario || !libro) {
+            return res.status(404).json({ message: 'Usuario o libro no encontrado' });
+        }
+
         const libroObjectId = mongoose.Types.ObjectId(libroId);
 
         // Verificar si el libroId ya está en favoritos
         const existeEnFavoritos = usuario.favoritos.some(favorito => favorito.libroId.equals(libroObjectId));
-
-        if (!usuario) {
-            return res.status(404).json({ message: 'Usuario no encontrado' });
-        }
 
         if (!existeEnFavoritos) {
             return res.status(400).json({ message: 'El libro no está en favoritos' });
@@ -160,13 +162,11 @@ exports.eliminarFav = async (req, res) => {
         // Elimina el elemento del array
         usuario.favoritos.splice(index, 1);
 
-        // Desvincular al usuario del libro (eliminarlo de usuariosSus)
-        const libro = await Libro.findById(libroId);
-        if (libro) {
+        // Desvincular al usuario del libro (eliminarlo de usuariosSus) si existe esa propiedad
+        if (libro.usuariosSus) {
             libro.usuariosSus = libro.usuariosSus.filter(suscriptor => suscriptor.usuarioId.toString() !== req.usuarioId._id);
             await libro.save();
         }
-
 
         await usuario.save();
 

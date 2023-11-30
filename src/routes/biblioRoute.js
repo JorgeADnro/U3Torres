@@ -19,6 +19,14 @@ router.get('/libs', libroController.obtenerLibros);
 // Suscribir usuario
 router.post('/libros/:libroId/aggUsr', libroController.añadirUsr);
 
+router.get('/libros/:libroId/usuariosSuscritos', libroController.obtenerUsuariosSuscritos);
+
+router.post('/libros/:libroId/notificar-cambioDisp',libroController.notificarCambioDisp);
+
+router.post('/libros/:libroId/notificar-cambioPrest',libroController.notificarCambioPrest);
+
+router.delete('/libros/:libroId/eliminar-usr', libroController.eliminarUsr);
+
 // Registrar usuario
 router.post('/signup', usuarioController.registrarUsuario);
 
@@ -36,11 +44,5 @@ router.get('/favoritos/verFav', usuarioController.verificador, usuarioController
 
 // Eliminar de favoritos
 router.delete('/favoritos/eliminar/:libroId', usuarioController.verificador, usuarioController.eliminarFav);
-
-router.get('/libros/:libroId/usuariosSuscritos', libroController.obtenerUsuariosSuscritos);
-
-router.post('/libros/:libroId/notificar-cambioDisp',libroController.notificarCambioDisp);
-
-router.post('/libros/:libroId/notificar-cambioPrest',libroController.notificarCambioPrest);
 
 module.exports = router;
