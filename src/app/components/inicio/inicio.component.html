@@ -17,7 +17,8 @@
                         <th scope="col">No. páginas</th>
                         <th scope="col">Imágen</th>
                         <th scope="col"></th>
-                        <th scope="col"></th>
+                        <th *ngIf="authService.loggedIn() && esAdmin" scope="col"></th>
+                        <th *ngIf="authService.loggedIn() && esAdmin" scope="col"></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -34,7 +35,10 @@
                         </td>
                           <i *ngIf="authService.loggedIn()" class="fa fa-heart fa-2x" (click)="agregarFavorito(libro._id, libro.titulo)" style="margin-right: 10px; cursor: pointer;"></i>
                           <td>
-                            <button (click)="notificarCambio(libro._id)">Notificar Cambio</button>
+                            <button *ngIf="authService.loggedIn() && esAdmin" (click)="notificarCambioDisp(libro._id)">Disponible</button>
+                          </td>
+                          <td>
+                            <button *ngIf="authService.loggedIn() && esAdmin" (click)="notificarCambioPrest(libro._id)">Prestado</button>
                           </td>
                       </tr>
                     </tbody>
