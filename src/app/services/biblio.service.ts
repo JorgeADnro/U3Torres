@@ -78,5 +78,9 @@ export class BiblioService {
       mergeMap(() => this.http.delete(url2))
     );
   }
+
+  getColonia(): Observable<any>{
+    return this.http.get<any[]>('http://localhost:9000/api/libs/col',requestOptions);
+  }
 }
 

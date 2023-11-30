@@ -1,27 +1,79 @@
 <div class="row">
-    <div class="col-md-4 mx-auto">
+    <div class="col-md-6 mx-auto">
         <div class="card">
             <div class="card-header">
                 SignUp
             </div>
             <div class="card-body">
-                <form [formGroup]="usuarioForm" (ngSubmit)="signUp()">
-                    <div class="form-group">
-                        <input type="text" formControlName="nombre" id="form-control" placeholder="Nombre" required autofocus>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" formControlName="direccion" id="form-control" placeholder="Dirección" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="text" formControlName="correo" id="form-control" placeholder="Correo" required>
-                    </div>
-                    <div class="form-group">
-                        <input type="password" formControlName="passwd" id="form-control" placeholder="Contraseña" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">
-                        Registrarse
-                    </button>
-                </form>
+                <div class="form-container">
+                    <form [formGroup]="usuarioForm" (ngSubmit)="signUp()" enctype="multipart/form-data">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label>Nombre</label>
+                                <input formControlName="nombre" type="text" class="form-control" placeholder="Nombre">
+                                <div class="text-danger"
+                                    *ngIf="usuarioForm.get('nombre')?.hasError('required') && usuarioForm.get('nombre')?.touched">
+                                    <span>Este campo es <strong>obligatorio</strong></span>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Calle</label>
+                                <input formControlName="calle" type="text" class="form-control">
+                                <div class="text-danger"
+                                    *ngIf="usuarioForm.get('calle')?.hasError('required') && usuarioForm.get('calle')?.touched">
+                                    <span>Este campo es <strong>obligatorio</strong></span>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label>Numero</label>
+                                    <input formControlName="no" type="text" class="form-control" placeholder="118-A">
+                                    <div class="text-danger"
+                                        *ngIf="usuarioForm.get('no')?.hasError('required') && usuarioForm.get('no')?.touched">
+                                        <span>Este campo es <strong>obligatorio</strong></span>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Colonia</label>
+                                    <select  formControlName="col" id="inputState" class="form-control">
+                                        <option value="" disabled selected>Selecciona una ciudad</option>
+                                        <option *ngFor="let colonia of listColonia"> {{colonia.nombre}} </option>
+                                    </select>
+                                    <div class="text-danger" *ngIf="usuarioForm.get('col')?.hasError('required') && usuarioForm.get('col')?.touched">
+                                        <span>Este campo es <strong>obligatorio</strong></span> 
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Código Postal</label>
+                                    <input formControlName="cp" type="number" class="form-control" placeholder="37800">
+                                    <div class="text-danger"
+                                        *ngIf="usuarioForm.get('cp')?.hasError('required') && usuarioForm.get('cp')?.touched">
+                                        <span>Este campo es <strong>obligatorio</strong></span>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Email</label>
+                                    <input formControlName="correo" type="correo" class="form-control" placeholder="ejemplo@gmail.com">
+                                    <div class="text-danger"
+                                        *ngIf="usuarioForm.get('correo')?.hasError('required') && usuarioForm.get('correo')?.touched">
+                                        <span>Este campo es <strong>obligatorio</strong></span>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Contraseña</label>
+                                    <input formControlName="passwd" type="password" class="form-control" placeholder="">
+                                    <div class="text-danger"
+                                        *ngIf="usuarioForm.get('passwd')?.hasError('required') && usuarioForm.get('passwd')?.touched">
+                                        <span>Este campo es <strong>obligatorio</strong></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-block">
+                                Registrarse
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

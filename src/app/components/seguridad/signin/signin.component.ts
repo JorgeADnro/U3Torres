@@ -37,7 +37,10 @@ export class SigninComponent implements OnInit{
 
     const usuario: Usuario = {
       nombre: this.usuarioForm.get('nombre')?.value,
-      direccion: this.usuarioForm.get('direccion')?.value,
+      calle: this.usuarioForm.get('calle')?.value,
+      col: this.usuarioForm.get('col')?.value,
+      no: this.usuarioForm.get('no')?.value,
+      cp: this.usuarioForm.get('cp')?.value,
       correo: this.usuarioForm.get('correo')?.value,
       passwd: this.usuarioForm.get('passwd')?.value,
       favoritos: [],

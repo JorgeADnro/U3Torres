@@ -1,15 +1,21 @@
 export class Usuario{
     _id?: number;
     nombre: String;
-    direccion: String;
+    calle: String;
+    no: String;
+    col: String;
+    cp: Number;
     correo: String;
     passwd: String;
     favoritos: string[];
     roles: string [];
 
-    constructor(nombre: String, direccion: String, correo: String, passwd: String){
+    constructor(nombre: String, calle: String, no: String, col: String, cp: Number, correo: String, passwd: String){
             this.nombre = nombre;
-            this.direccion = direccion;
+            this.calle = calle;
+            this.no = no;
+            this.col = col;
+            this.cp = cp;
             this.correo = correo;
             this.passwd = passwd;
             this.favoritos = [];

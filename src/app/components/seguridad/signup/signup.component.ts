@@ -5,6 +5,8 @@ import { ToastrService } from 'ngx-toastr';
 import { AuthService } from '../../../services/auth.service'
 import { Usuario } from 'src/app/models/usuario';
 import Swal from 'sweetalert2';
+import { BiblioService } from 'src/app/services/biblio.service';
+import { Colonia } from 'src/app/models/colonia';
 
 @Component({
   selector: 'app-signup',
@@ -18,19 +20,28 @@ export class SignupComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private _authService: AuthService,
-    private router: Router
+    private router: Router,
+    private _biblioService: BiblioService
   ) {
     this.usuarioForm = this.fb.group({
       nombre: ['', Validators.required],
-      direccion: ['', Validators.required],
+      calle: ['', Validators.required],
+      col: ['', Validators.required],
+      no: ['', Validators.required],
+      cp: ['', Validators.required],
       correo: ['', Validators.required],
       passwd: ['', Validators.required]
     })
   }
 
   ngOnInit() {
-
+    this.obtenerColonia();
   }
+
+  /*calle: String;
+    no: String;
+    col: String;
+    cp: Number;*/
 
   signUp() {
     console.log(this.usuarioForm)
@@ -39,8 +50,11 @@ export class SignupComponent implements OnInit {
 
     const usuario: Usuario = {
       nombre: this.usuarioForm.get('nombre')?.value,
-      direccion: this.usuarioForm.get('direccion')?.value,
+      calle: this.usuarioForm.get('calle')?.value,
       correo: this.usuarioForm.get('correo')?.value,
+      no: this.usuarioForm.get('no')?.value,
+      col: this.usuarioForm.get('col')?.value,
+      cp: this.usuarioForm.get('cp')?.value,
       passwd: this.usuarioForm.get('passwd')?.value,
       favoritos: [],
       roles: []
@@ -56,5 +70,17 @@ export class SignupComponent implements OnInit {
     });
 
     console.log(usuario);
+  }
+
+  listColonia: Colonia[] = [];
+
+  obtenerColonia() {
+    this._biblioService.getColonia().subscribe(data => {
+      console.log(data);
+      this.listColonia = data;
+    },error => {
+      console.log(error);
+    })
+    
   }
 }
